@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">MobileNetworkProject</string>
+    <string name="article1_title">Big Data For Beginners</string>
+    <string name="article1_sub_title">Max Mustermann - 50 Likes - 538 Views</string>
+    <string name="article1_star">* 4.3(6)</string>
+    <string name="article2_title">Industry 3.0 in connection with AR</string>
+    <string name="article2_sub_title">Franz Scholz - 358 Likes - 1.5k Views</string>
+    <string name="article2_star">* 4.1(60)</string>
 </resources>
