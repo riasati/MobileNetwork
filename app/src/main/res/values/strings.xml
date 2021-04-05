@@ -5,4 +5,5 @@
     <string name="add">Add</string>
     <string name="tv">Tv</string>
     <string name="word">Word</string>
+    <string name="des_menu_icon">menu icon</string>
 </resources>
