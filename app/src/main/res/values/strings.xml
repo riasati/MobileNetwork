@@ -6,4 +6,7 @@
     <string name="tv">Tv</string>
     <string name="word">Word</string>
     <string name="des_menu_icon">menu icon</string>
+    <string name="title">Hey Tobias,</string>
+    <string name="subtitle">what would you like to learn today?</string>
+    <string name="search_text">search for anything</string>
 </resources>
