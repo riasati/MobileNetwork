@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_home"/>
+    <item
+        android:id="@+id/school"
+        android:title="@string/school"
+        android:icon="@drawable/ic_school"/>
+    <item
+        android:id="@+id/add"
+        android:title="@string/add"
+        android:icon="@drawable/ic_add"/>
+    <item
+        android:id="@+id/tv"
+        android:title="@string/tv"
+        android:icon="@drawable/ic_tv"/>
+    <item
+        android:id="@+id/word"
+        android:title="@string/word"
+        android:icon="@drawable/ic_word"/>
+</menu>
