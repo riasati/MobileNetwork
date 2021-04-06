@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:angle="90"
+                android:endColor="#D14BD6"
+                android:startColor="#3F51B5" />
+            <corners
+                android:bottomLeftRadius="20dp"
+                android:bottomRightRadius="0dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="20dp" />
+        </shape>
+    </item>
+    <item
+        android:bottom="10dp"
+        android:drawable="@drawable/bookmark"
+        android:left="10dp"
+        android:right="10dp"
+        android:top="10dp" />
+</layer-list>

@@ -11,4 +11,5 @@
     <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#03DAC5</color>
     <color name="black">#000000</color>
+    <item name="gradient" type="drawable">@drawable/gradient_color</item>
 </resources>

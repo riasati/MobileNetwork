@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#FFFFFF"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -11,12 +12,11 @@
         android:layout_height="200dp"
         android:layout_gravity="center">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            app:cardCornerRadius="20dp"
-            >
+            app:cardCornerRadius="20dp">
 
             <ImageView
                 android:id="@+id/article_image"
@@ -26,22 +26,15 @@
                 android:importantForAccessibility="no"
                 android:scaleType="centerCrop"
                 android:src="@drawable/image1" />
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="50dp"
+        <view
+            android:id="@+id/rectimage"
             android:layout_height="50dp"
-            android:layout_gravity="center"
-            app:cardCornerRadius="20dp"
+            android:layout_width="50dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:srcCompat="@tools:sample/avatars" />
-        </androidx.cardview.widget.CardView>
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/rectangle_shape"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -73,17 +66,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/article_star" />
 
+        <view
+            android:layout_height="20dp"
+            android:layout_width="20dp"
+            android:layout_marginEnd="5dp"
+            app:layout_constraintEnd_toStartOf="@id/article_star"
+            app:layout_constraintBottom_toBottomOf="@id/article_star"
+            android:background="@drawable/star_border"/>
         <TextView
             android:id="@+id/article_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
-            android:text="* 4.3 (6) "
+            android:text="4.3 (6) "
             android:textColor="@color/colorGray"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </LinearLayout>
