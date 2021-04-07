@@ -54,7 +54,8 @@
         app:layout_constraintTop_toBottomOf="@id/app_bar"
         android:padding="5dp"
         android:orientation="vertical"
-        android:layout_marginTop="35dp">
+        android:layout_marginTop="35dp"
+        android:id="@+id/title_search_bar">
 
         <TextView
             android:layout_width="wrap_content"
@@ -117,10 +118,40 @@
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_nav_menu"/>
 
+<!--    <include-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/title_search_bar"-->
+<!--        layout="@layout/article_card" />-->
+
+<!--    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:fillViewport="true"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/title_search_bar"-->
+<!--        >-->
+
+<!--        <TableLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:stretchColumns="1">-->
+<!--            <TableRow>-->
+<!--                    <include-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        app:layout_constraintTop_toBottomOf="@id/title_search_bar"-->
+<!--                        layout="@layout/article_card" />-->
+<!--            </TableRow>-->
+
+<!--            &lt;!&ndash; everything you already have &ndash;&gt;-->
+
+<!--        </TableLayout>-->
+<!--    </ScrollView>-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="160dp"
+        app:layout_constraintTop_toBottomOf="@id/title_search_bar"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

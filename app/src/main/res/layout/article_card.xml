@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/article_card" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="387dp"
@@ -18,23 +19,22 @@
             android:layout_gravity="center"
             app:cardCornerRadius="20dp">
 
-            <ImageView
-                android:id="@+id/article_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:importantForAccessibility="no"
-                android:scaleType="centerCrop"
-                android:src="@drawable/image1" />
+<!--            <ImageView-->
+<!--                android:id="@+id/article_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/image1" />-->
         </com.google.android.material.card.MaterialCardView>
 
-        <view
-            android:id="@+id/rectimage"
-            android:layout_height="50dp"
-            android:layout_width="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@drawable/rectangle_shape"/>
+<!--        <view-->
+<!--            android:id="@+id/rectimage"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_width="50dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:background="@drawable/rectangle_shape"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -66,13 +66,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/article_star" />
 
-        <view
-            android:layout_height="20dp"
-            android:layout_width="20dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintEnd_toStartOf="@id/article_star"
-            app:layout_constraintBottom_toBottomOf="@id/article_star"
-            android:background="@drawable/star_border"/>
+<!--        <view-->
+<!--            android:layout_height="20dp"-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/article_star"-->
+<!--            app:layout_constraintBottom_toBottomOf="@id/article_star"-->
+<!--            android:background="@drawable/star_border"-->
+<!--            android:layout_marginRight="5dp" />-->
         <TextView
             android:id="@+id/article_star"
             android:layout_width="wrap_content"
