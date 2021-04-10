@@ -9,45 +9,41 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:gravity="fill">
+        android:layout_gravity="center">
+
+
+        <Button
+            android:id="@+id/rectimage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:importantForAccessibility="no"
+            android:foreground="@drawable/rectangle_shape"
+            app:layout_constraintTop_toTopOf="@id/article_image_card"
+            app:layout_constraintEnd_toEndOf="@id/article_image_card"
+            />
+
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/article_image_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="fill"
             app:cardCornerRadius="20dp">
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/article_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="fill"
-                android:gravity="fill"
-                >
-
-                <ImageView
-                    android:id="@+id/article_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="fill"
-                    android:importantForAccessibility="no"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/image2" />
-
-                <ImageView
-                    android:id="@+id/rectimage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/rectangle_shape" />
-            </RelativeLayout>
+                android:importantForAccessibility="no"
+                android:src="@drawable/image1" />
         </androidx.cardview.widget.CardView>
 
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <TextView
         android:id="@+id/article_title"
         android:layout_width="match_parent"

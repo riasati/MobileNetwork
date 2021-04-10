@@ -23,7 +23,7 @@ class ItemAdapter(
         val title: TextView = view.findViewById(R.id.article_title)
         val subTitle: TextView = view.findViewById(R.id.article_sub_title)
         val star: TextView = view.findViewById(R.id.article_star)
- //       val image: ImageView = view.findViewById(R.id.article_image)
+        val image: ImageView = view.findViewById(R.id.article_image)
     }
 
     /**
@@ -45,7 +45,7 @@ class ItemAdapter(
         holder.title.text = context.resources.getString(item.titleResourceId)
         holder.subTitle.text = context.resources.getString(item.subTitleResourceId)
         holder.star.text = context.resources.getString(item.starResourceId)
-    //    holder.image.setImageResource(item.imageResourceId)
+        holder.image.setImageResource(item.imageResourceId)
     }
 
     /**

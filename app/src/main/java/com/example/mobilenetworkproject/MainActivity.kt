@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
 
         // Initialize data.
         val myDataset = Datasource().loadAffirmations()
-
+        print(myDataset)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.adapter = ItemAdapter(this, myDataset)
 
