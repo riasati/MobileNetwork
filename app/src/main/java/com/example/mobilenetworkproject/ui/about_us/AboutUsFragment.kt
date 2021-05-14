@@ -1,4 +1,4 @@
-package com.example.mobilenetworkproject.ui.gallery
+package com.example.mobilenetworkproject.ui.about_us
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.mobilenetworkproject.R
 
-class GalleryFragment : Fragment() {
+class AboutUsFragment : Fragment() {
 
-    private lateinit var galleryViewModel: GalleryViewModel
+    private lateinit var aboutUsViewModel: AboutUsViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        galleryViewModel =
-                ViewModelProviders.of(this).get(GalleryViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_gallery, container, false)
+        aboutUsViewModel =
+                ViewModelProviders.of(this).get(AboutUsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_about_us, container, false)
         val textView: TextView = root.findViewById(R.id.text_gallery)
-        galleryViewModel.text.observe(viewLifecycleOwner, Observer {
+        aboutUsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
