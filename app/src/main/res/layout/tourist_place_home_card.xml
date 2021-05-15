@@ -34,7 +34,7 @@
                     android:layout_gravity="fill"
                     android:importantForAccessibility="no"
                     android:scaleType="fitXY"
-                    android:src="@drawable/image2" />
+                    android:src="@drawable/tp1" />
 
                 <ImageView
                     android:id="@+id/rectimage"
