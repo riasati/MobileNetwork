@@ -3,7 +3,7 @@ package com.example.mobilenetworkproject.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.mobilenetworkproject.model.entity.TouristPlace
+import com.example.mobilenetworkproject.model.entity.TouristPlaceModel
 import com.example.mobilenetworkproject.model.repository.HomeDataRepository
 
 class HomeViewModel : ViewModel() {
@@ -13,9 +13,9 @@ class HomeViewModel : ViewModel() {
     }
     val text: LiveData<String> = _text
 
-    private val _touristPlaces: MutableLiveData<Array<TouristPlace>> = MutableLiveData<Array<TouristPlace>>().apply {
+    private val _touristPlacesModel: MutableLiveData<Array<TouristPlaceModel>> = MutableLiveData<Array<TouristPlaceModel>>().apply {
         value = HomeDataRepository.getTouristPlace()
     }
 
-    val touristPlaces: LiveData<Array<TouristPlace>> = _touristPlaces
+    val touristPlacesModel: LiveData<Array<TouristPlaceModel>> = _touristPlacesModel
 }

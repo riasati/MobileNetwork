@@ -29,8 +29,8 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
-        homeViewModel.touristPlaces.observe(viewLifecycleOwner, Observer {
-            // TODO
+        homeViewModel.touristPlacesModel.observe(viewLifecycleOwner, Observer { touristPlaces ->
+            recyclerTouristPlace.adapter = TouristPlaceAdapter(touristPlaces)
         })
         return root
     }

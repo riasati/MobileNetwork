@@ -1,0 +1,10 @@
+package com.example.mobilenetworkproject.model.entity
+
+import androidx.annotation.DrawableRes
+
+data class TouristPlaceModel (
+    val name:String,
+    val country:String,
+    val star: Float,
+    @DrawableRes val imageResourceId: Int
+)
