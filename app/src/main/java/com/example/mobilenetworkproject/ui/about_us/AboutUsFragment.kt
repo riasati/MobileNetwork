@@ -22,9 +22,23 @@ class AboutUsFragment : Fragment() {
         aboutUsViewModel =
                 ViewModelProviders.of(this).get(AboutUsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_about_us, container, false)
-        val textView: TextView = root.findViewById(R.id.text_gallery)
-        aboutUsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        val textView_studnet1_name: TextView = root.findViewById(R.id.text_student1_name)
+        val textView_studnet1_email: TextView = root.findViewById(R.id.text_student1_email)
+        val textView_studnet1_id: TextView = root.findViewById(R.id.text_student1_id)
+
+        val textView_studnet2_name: TextView = root.findViewById(R.id.text_student2_name)
+        val textView_studnet2_email: TextView = root.findViewById(R.id.text_student2_email)
+        val textView_studnet2_id: TextView = root.findViewById(R.id.text_student2_id)
+//        aboutUsViewModel.text.observe(viewLifecycleOwner, Observer {
+//            textView.text = it
+//        })
+        aboutUsViewModel.studentModel.observe(viewLifecycleOwner, Observer {
+            textView_studnet1_name.text = it[0].name
+            textView_studnet1_email.text = it[0].emailAddress
+            textView_studnet1_id.text = it[0].studentID
+            textView_studnet2_name.text = it[1].name
+            textView_studnet2_email.text = it[1].emailAddress
+            textView_studnet2_id.text = it[1].studentID
         })
         return root
     }

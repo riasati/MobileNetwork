@@ -6,5 +6,6 @@ data class TouristPlaceModel (
     val name:String,
     val country:String,
     val star: Float,
+    val description: String,
     @DrawableRes val imageResourceId: Int
 )

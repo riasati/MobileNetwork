@@ -9,4 +9,6 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_about_us">About-Us</string>
+    <string name="student_1">Student 1</string>
+    <string name="student_2">Student 2</string>
 </resources>
