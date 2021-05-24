@@ -19,6 +19,7 @@ class TouristPlaceAdapter(
         val country: TextView = view.findViewById(R.id.tourist_place_country)
         val star: TextView = view.findViewById(R.id.tourist_place_star)
         val image: ImageView = view.findViewById(R.id.tourist_place_image)
+        val id: TextView = view.findViewById(R.id.tourist_place_id)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,5 +38,6 @@ class TouristPlaceAdapter(
         holder.country.text = item.country
         holder.star.text = item.star.toString()
         holder.image.setImageResource(item.imageResourceId)
+        holder.id.text = item.id.toString()
     }
 }
