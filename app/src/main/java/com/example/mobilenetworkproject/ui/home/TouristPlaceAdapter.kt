@@ -1,25 +1,34 @@
 package com.example.mobilenetworkproject.ui.home
 
-import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilenetworkproject.R
 import com.example.mobilenetworkproject.model.entity.TouristPlaceModel
 
+
 class TouristPlaceAdapter(
-    private val dataset: Array<TouristPlaceModel>
+    private val dataset: Array<TouristPlaceModel>,
 ) : RecyclerView.Adapter<TouristPlaceAdapter.ViewHolder>() {
 
-    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
+    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener{
         val name: TextView = view.findViewById(R.id.tourist_place_name)
         val country: TextView = view.findViewById(R.id.tourist_place_country)
         val star: TextView = view.findViewById(R.id.tourist_place_star)
         val image: ImageView = view.findViewById(R.id.tourist_place_image)
         val id: TextView = view.findViewById(R.id.tourist_place_id)
+
+        override fun onClick(v: View) {
+            val bundle = Bundle()
+            bundle.putInt("id", this.id.text.toString().toInt())
+            v.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

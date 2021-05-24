@@ -28,12 +28,13 @@ class SlideshowFragment : Fragment() {
         val textView_country: TextView = root.findViewById(R.id.tourist_place_country)
         val textView_star: TextView = root.findViewById(R.id.tourist_place_star)
         val textView_description: TextView = root.findViewById(R.id.tourist_place_description)
+        val id:Int = Bundle().get("id").toString().toInt()
         slideshowViewModel.touristPlacesModel.observe(viewLifecycleOwner, Observer {
-            imageView.setImageResource(it[1].imageResourceId)
-            textView_name.text = it[1].name
-            textView_country.text = it[1].country
-            textView_star.text = it[1].star.toString()
-            textView_description.text = it[1].description
+            imageView.setImageResource(it[id].imageResourceId)
+            textView_name.text = it[id].name
+            textView_country.text = it[id].country
+            textView_star.text = it[id].star.toString()
+            textView_description.text = it[id].description
         })
         return root
     }
