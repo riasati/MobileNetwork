@@ -15,19 +15,22 @@ import com.example.mobilenetworkproject.model.entity.TouristPlaceModel
 
 class TouristPlaceAdapter(
     private val dataset: Array<TouristPlaceModel>,
+//    private val mainView: View
 ) : RecyclerView.Adapter<TouristPlaceAdapter.ViewHolder>() {
 
-    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener{
+    class ViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
+        val myView: View = view
         val name: TextView = view.findViewById(R.id.tourist_place_name)
         val country: TextView = view.findViewById(R.id.tourist_place_country)
         val star: TextView = view.findViewById(R.id.tourist_place_star)
         val image: ImageView = view.findViewById(R.id.tourist_place_image)
         val id: TextView = view.findViewById(R.id.tourist_place_id)
 
-        override fun onClick(v: View) {
+        fun onClick() {
+            print("himsalfjl")
             val bundle = Bundle()
             bundle.putInt("id", this.id.text.toString().toInt())
-            v.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.myView.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
         }
     }
 
@@ -48,5 +51,6 @@ class TouristPlaceAdapter(
         holder.star.text = item.star.toString()
         holder.image.setImageResource(item.imageResourceId)
         holder.id.text = item.id.toString()
+        holder.itemView.setOnClickListener { holder.onClick() }
     }
 }
