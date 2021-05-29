@@ -28,7 +28,7 @@ class SlideshowFragment : Fragment() {
         val textView_country: TextView = root.findViewById(R.id.tourist_place_country)
         val textView_star: TextView = root.findViewById(R.id.tourist_place_star)
         val textView_description: TextView = root.findViewById(R.id.tourist_place_description)
-        val id:Int = Bundle().get("id").toString().toInt()
+        val id: Int = arguments?.getInt("id")!!
         slideshowViewModel.touristPlacesModel.observe(viewLifecycleOwner, Observer {
             imageView.setImageResource(it[id].imageResourceId)
             textView_name.text = it[id].name

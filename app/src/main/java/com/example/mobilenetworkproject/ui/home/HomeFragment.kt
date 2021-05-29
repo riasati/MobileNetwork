@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobilenetworkproject.R
 
@@ -28,7 +29,7 @@ class HomeFragment : Fragment() {
         val recyclerTouristPlace: RecyclerView = root.findViewById(R.id.recycler_tourist_place)
 
         homeViewModel.touristPlacesModel.observe(viewLifecycleOwner, Observer { touristPlaces ->
-            recyclerTouristPlace.adapter = TouristPlaceAdapter(touristPlaces)
+            recyclerTouristPlace.adapter = TouristPlaceAdapter(touristPlaces, this.findNavController())
         })
         return root
     }
