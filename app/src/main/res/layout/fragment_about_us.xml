@@ -75,7 +75,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/tp1"
+                tools:src="@drawable/mohammadmahdi"
                 />
 
         </androidx.cardview.widget.CardView>
@@ -146,7 +146,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/tp2"
+                tools:src="@drawable/hamidreza"
                 />
 
         </androidx.cardview.widget.CardView>

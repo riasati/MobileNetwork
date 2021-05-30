@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_home_to_nav_slide_show"
-            app:destination="@id/nav_slide_show" />
+            app:destination="@id/nav_tourist_place_page" />
     </fragment>
 
     <fragment
@@ -22,10 +22,10 @@
         tools:layout="@layout/fragment_about_us" />
 
     <fragment
-        android:id="@+id/nav_slide_show"
-        android:name="com.example.mobilenetworkproject.ui.slideshow.SlideshowFragment"
-        android:label="slideShow"
-        tools:layout="@layout/fragment_slideshow" >
+        android:id="@+id/nav_tourist_place_page"
+        android:name="com.example.mobilenetworkproject.ui.touristPlacePage.TouristPlacePageFragment"
+        android:label="@string/menu_tourist_place_page"
+        tools:layout="@layout/fragment_tourist_place_page" >
         <argument
             android:name="idArg"
             app:argType="integer"

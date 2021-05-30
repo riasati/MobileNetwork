@@ -1,4 +1,4 @@
-package com.example.mobilenetworkproject.ui.slideshow
+package com.example.mobilenetworkproject.ui.touristPlacePage
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,17 +11,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.mobilenetworkproject.R
 
-class SlideshowFragment : Fragment() {
+class TouristPlacePageFragment : Fragment() {
 
-    private lateinit var slideshowViewModel: SlideshowViewModel
+    private lateinit var touristPlacePageViewModel: TouristPlacePageViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel::class.java)
+        touristPlacePageViewModel =
+                ViewModelProviders.of(this).get(TouristPlacePageViewModel::class.java)
         val root = inflater.inflate(R.layout.tourist_place_detail_card, container, false)
         val imageView: ImageView = root.findViewById(R.id.tourist_place_image)
         val textView_name: TextView = root.findViewById(R.id.tourist_place_name)
@@ -29,7 +29,7 @@ class SlideshowFragment : Fragment() {
         val textView_star: TextView = root.findViewById(R.id.tourist_place_star)
         val textView_description: TextView = root.findViewById(R.id.tourist_place_description)
         val id: Int = arguments?.getInt("id")!!
-        slideshowViewModel.touristPlacesModel.observe(viewLifecycleOwner, Observer {
+        touristPlacePageViewModel.touristPlacesModel.observe(viewLifecycleOwner, Observer {
             imageView.setImageResource(it[id].imageResourceId)
             textView_name.text = it[id].name
             textView_country.text = it[id].country
