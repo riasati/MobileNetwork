@@ -9,7 +9,7 @@ interface CellInformationDAO {
     fun selectAllCelInformation(): List<CellInformationEntity>
 
     @Insert
-    fun insertCellInformation(cellInformation: CellInformationEntity): Int
+    fun insertCellInformation(cellInformation: CellInformationEntity)
 
     @Delete
     fun deleteCellInformation(cellInformation: CellInformationEntity)
