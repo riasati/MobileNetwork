@@ -4,10 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mobilenetworkproject.model.data.repository.impl.MapDataRepositoryImpl
+import com.example.mobilenetworkproject.model.domain.CellInformation
 
 class MapPageViewModel : ViewModel() {
-    private val _cellPlace = MutableLiveData<Array<StudentModel>>().apply {
-        value = MapDataRepositoryImpl.
+    fun getCellInformation(cell_information_id: Int): CellInformation{
+        return MapDataRepositoryImpl.getCellInformation(cell_information_id)
     }
-    val studentModel: LiveData<Array<StudentModel>> = _studentModel
+
+    fun selectAllCellsInformation(): List<CellInformation>{
+        return MapDataRepositoryImpl.selectAllCellsInformation()
+    }
 }

@@ -5,16 +5,10 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.example.mobilenetworkproject.R
 import com.google.android.gms.maps.GoogleMap
@@ -57,26 +51,25 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolylin
         myMap = googleMap
         // Add custom info window
         myMap.setInfoWindowAdapter(CustomInfoWindowForGoogleMap(this))
-        mapPageViewModel
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
         val opera = LatLng(-33.9320447, 151.1597271)
-        this.addMarkerToMap(listOf(sydney, opera))
+        this.addCellsInformationToMap()
 
         // Add polylines to the map.
         // Polylines are useful to show a route or some other connection between points.
-//        val polyline1 = googleMap.addPolyline(
-//            PolylineOptions()
-//                .clickable(true)
-//                .add(
-//                    LatLng(-35.016, 143.321),
-//                    LatLng(-34.747, 145.592),
-//                    LatLng(-34.364, 147.891),
-//                    LatLng(-33.501, 150.217),
-//                    LatLng(-32.306, 149.248),
-//                    LatLng(-32.491, 147.309)
-//                )
-//        )
+        val polyline1 = googleMap.addPolyline(
+            PolylineOptions()
+                .clickable(true)
+                .add(
+                    LatLng(-35.016, 143.321),
+                    LatLng(-34.747, 145.592),
+                    LatLng(-34.364, 147.891),
+                    LatLng(-33.501, 150.217),
+                    LatLng(-32.306, 149.248),
+                    LatLng(-32.491, 147.309)
+                )
+        )
 
         // Position the map's camera near Alice Springs in the center of Australia,
         // and set the zoom factor so most of Australia shows on the screen.
@@ -87,14 +80,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolylin
         // Set listeners for click events.
 //        googleMap.setOnPolylineClickListener(this)
 //        googleMap.setOnPolygonClickListener(this)
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.addMarker(MarkerOptions().position(LatLng(-35.016, 143.321)).title("Marker in Sydney"))
-//        mMap.addMarker(MarkerOptions().position(LatLng(-34.747, 145.592)).title("Marker in Sydney"))
-//        mMap.addMarker(MarkerOptions().position(LatLng(-34.364, 147.891)).title("Marker in Sydney"))
-//        mMap.addMarker(MarkerOptions().position(LatLng(-33.501, 150.217)).title("Marker in Sydney"))
-//        mMap.addMarker(MarkerOptions().position(LatLng(-32.306, 149.248)).title("Marker in Sydney"))
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
@@ -133,12 +118,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolylin
         ).show()
     }
 
-    private fun addMarkerToMap(changePlaces: List<LatLng>) {
-        for (changePlace in changePlaces) {
-            val changePlaceInfo = getPlaceInfo(changePlace)
+    private fun addCellsInformationToMap() {
+        val cellsInformation = mapPageViewModel.selectAllCellsInformation()
+        for (cellInformation in cellsInformation) {
+            // TODO GET CELL PLACE IF MOHAMMAD CANT'T
             myMap.addMarker(
                 MarkerOptions()
-                    .position(changePlace)
+                    .position(cellPlace)
                     .title(changePlaceInfo.get("title"))
                     .snippet(changePlaceInfo.get("integer"))
             )
@@ -146,7 +132,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolylin
         }
     }
 
-    private fun getPlaceInfo(place: LatLng): Map<String, String> {
+    private fun getPlaceInfo(cell_information_id: Int): Map<String, String> {
         // TODO GET INFO FROM DB
         return mapOf(
             "title" to "title",
