@@ -15,7 +15,7 @@ object HomeDataRepositoryImpl: HomeDataRepository{
     }
 
     override fun getCelInformationByCellId(cell_id: Long): Long {
-        LocalCellInformationDataSourceImpl.getCelInformationByCellId(cell_id)
+        return LocalCellInformationDataSourceImpl.getCelInformationByCellId(cell_id)
     }
 
 }

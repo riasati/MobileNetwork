@@ -19,7 +19,7 @@ object LocalCellInformationDataSourceImpl: LocalCellInformationDataSource {
 
     override fun getCelInformationByCellId(cell_id: Long): Long {
         val appDatabase = BaseApplication.appDatabase
-        appDatabase.cellInformationDAO().getCelInformationByCellId(cell_id)
+        return appDatabase.cellInformationDAO().getCelInformationByCellId(cell_id)
 
     }
 }
