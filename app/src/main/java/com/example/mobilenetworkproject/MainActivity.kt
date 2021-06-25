@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar
 import org.json.JSONObject
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager

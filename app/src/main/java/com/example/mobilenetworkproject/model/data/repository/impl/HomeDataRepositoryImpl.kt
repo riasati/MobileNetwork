@@ -14,7 +14,7 @@ object HomeDataRepositoryImpl: HomeDataRepository{
         LocalLocationInformationDataSourceImpl.insertLocationInformation(locationInformation)
     }
 
-    override fun getCelInformationByCellId(cell_id: Long): Long {
+    override fun getCelInformationByCellId(cell_id: Long): CellInformation? {
         return LocalCellInformationDataSourceImpl.getCelInformationByCellId(cell_id)
     }
 

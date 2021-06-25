@@ -54,7 +54,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolylin
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
         val opera = LatLng(-33.9320447, 151.1597271)
-        this.addCellsInformationToMap()
+//        this.addCellsInformationToMap()
 
         // Add polylines to the map.
         // Polylines are useful to show a route or some other connection between points.
@@ -118,19 +118,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnPolylin
         ).show()
     }
 
-    private fun addCellsInformationToMap() {
-        val cellsInformation = mapPageViewModel.selectAllCellsInformation()
-        for (cellInformation in cellsInformation) {
-            // TODO GET CELL PLACE IF MOHAMMAD CANT'T
-            myMap.addMarker(
-                MarkerOptions()
-                    .position(cellPlace)
-                    .title(changePlaceInfo.get("title"))
-                    .snippet(changePlaceInfo.get("integer"))
-            )
-
-        }
-    }
+//    private fun addCellsInformationToMap() {
+//        val cellsInformation = mapPageViewModel.selectAllCellsInformation()
+//        for (cellInformation in cellsInformation) {
+//            // TODO GET CELL PLACE IF MOHAMMAD CANT'T
+//            myMap.addMarker(
+//                MarkerOptions()
+//                    .position(cellPlace)
+//                    .title(changePlaceInfo.get("title"))
+//                    .snippet(changePlaceInfo.get("integer"))
+//            )
+//
+//        }
+//    }
 
     private fun getPlaceInfo(cell_information_id: Int): Map<String, String> {
         // TODO GET INFO FROM DB
