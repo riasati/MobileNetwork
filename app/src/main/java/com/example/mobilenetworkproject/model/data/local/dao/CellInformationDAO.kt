@@ -8,6 +8,9 @@ interface CellInformationDAO {
     @Query("SELECT * FROM cell_information")
     fun selectAllCelInformation(): List<CellInformationEntity>
 
+    @Query("SELECT cell_id FROM cell_information WHERE cell_id=:cell_id" )
+    fun getCelInformationByCellId(cell_id : Long): Long
+
     @Insert
     fun insertCellInformation(cellInformation: CellInformationEntity)
 

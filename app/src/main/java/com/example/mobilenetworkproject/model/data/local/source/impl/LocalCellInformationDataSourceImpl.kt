@@ -16,4 +16,10 @@ object LocalCellInformationDataSourceImpl: LocalCellInformationDataSource {
         val appDatabase = BaseApplication.appDatabase
         appDatabase.cellInformationDAO().insertCellInformation(CellInformationMapper.mapDomainToEntity(cellInformation))
     }
+
+    override fun getCelInformationByCellId(cell_id: Long): Long {
+        val appDatabase = BaseApplication.appDatabase
+        appDatabase.cellInformationDAO().getCelInformationByCellId(cell_id)
+
+    }
 }

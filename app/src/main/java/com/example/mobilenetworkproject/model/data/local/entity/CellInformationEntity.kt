@@ -8,10 +8,16 @@ import androidx.room.PrimaryKey
 data class CellInformationEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val name: String,
-
-    @ColumnInfo(name = "email_address")
-    val emailAddress: String,
-    @ColumnInfo(name = "student_id")
-    val studentID: String
+    @ColumnInfo(name = "generation")
+    val cellGeneration: String,
+    @ColumnInfo(name = "cell_id")
+    val cellId: Long,
+    @ColumnInfo(name = "PLMN")
+    val cellPLMN: String,
+    @ColumnInfo(name = "ARFCN")
+    val cellARFCN: Int,
+    @ColumnInfo(name = "LAC_TAC")
+    val cellLac: Int,
+    @ColumnInfo(name = "BSIC_PSC_PCI")
+    val cellCode: Int,
 )
