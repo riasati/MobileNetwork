@@ -26,11 +26,7 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val recyclerTouristPlace: RecyclerView = root.findViewById(R.id.recycler_tourist_place)
 
-        homeViewModel.touristPlacesModel.observe(viewLifecycleOwner, Observer { touristPlaces ->
-            recyclerTouristPlace.adapter = TouristPlaceAdapter(touristPlaces, this.findNavController())
-        })
         return root
     }
 }
