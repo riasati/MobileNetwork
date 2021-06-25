@@ -5,10 +5,10 @@ import com.example.mobilenetworkproject.model.data.local.entity.CellInformationE
 
 object CellInformationMapper {
     fun mapEntityToDomain(from: CellInformationEntity): CellInformation {
-        return CellInformation(name = from.name, studentID = from.studentID, emailAddress = from.emailAddress)
+        return CellInformation(cellGeneration = from.cellGeneration, cellId = from.cellId, cellPLMN = from.cellPLMN, cellARFCN = from.cellARFCN, cellLac = from.cellLac, cellCode = from.cellCode)
     }
 
     fun mapDomainToEntity(from: CellInformation): CellInformationEntity{
-        return CellInformationEntity(null, name = from.name, studentID = from.studentID, emailAddress = from.emailAddress)
+        return CellInformationEntity(null, cellGeneration = from.cellGeneration, cellId = from.cellId, cellPLMN = from.cellPLMN, cellARFCN = from.cellARFCN, cellLac = from.cellLac, cellCode = from.cellCode)
     }
 }

@@ -7,5 +7,6 @@ interface LocalCellInformationDataSource {
 
     fun insertCellInformation(cellInformation: CellInformation)
 
-    fun getCellInformation(cell_information_id: Int): CellInformation
+    fun getCelInformationByCellId(cell_id: Long): CellInformation
+
 }
