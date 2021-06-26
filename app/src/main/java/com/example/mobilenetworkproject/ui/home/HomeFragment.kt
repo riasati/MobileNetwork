@@ -28,6 +28,13 @@ import com.example.mobilenetworkproject.model.data.repository.impl.HomeDataRepos
 import com.example.mobilenetworkproject.model.data.repository.impl.HomeDataRepositoryImpl.insertLocationInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
 import com.google.android.material.snackbar.Snackbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Looper
+import com.google.android.gms.common.GooglePlayServicesUtilLight.isGooglePlayServicesAvailable
+import com.google.android.gms.location.*
 
 
 interface RecyclerViewClickListener {
@@ -36,6 +43,10 @@ interface RecyclerViewClickListener {
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
+    private lateinit var locationManager: LocationManager
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,9 +60,11 @@ class HomeFragment : Fragment() {
             if (button.text == "Start"){
                 button.text = "Finished"
                 getLocation(root,root.context,homeViewModel)
+                startLocationUpdates()
             }
             else if (button.text == "Finished"){
                 button.text = "Start"
+                stopLocationUpdates()
                 Snackbar.make(root.context,root,"Click",Snackbar.LENGTH_SHORT).show()
             }
 
@@ -87,10 +100,13 @@ class HomeFragment : Fragment() {
         return null
     }
 
-    @SuppressLint("MissingPermission")
+   // @SuppressLint("MissingPermission")
     fun getActiveCellInfo(context: Context): CellInfo? {
         val tel = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         var numRegisteredCellInfo = 0
+       if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+           return null
+       }
         val cellInfos = tel.allCellInfo ?: return null
         var result: CellInfo? = null
         for (i in cellInfos.indices) {
@@ -171,50 +187,67 @@ class HomeFragment : Fragment() {
     }
 
     //    @SuppressLint("ServiceCast")
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            null /* Looper */
+        )
+    }
+
     @SuppressLint("MissingPermission","ServiceCast")
     fun getLocation(root: View,context: Context,homeViewModel: HomeViewModel){
 
-        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0F, object :
-            LocationListener {
-            @RequiresApi(Build.VERSION_CODES.Q)
-            override fun onLocationChanged(locationGps: Location) {
-                val locationObj = JSONObject()
-                if (locationGps != null) {
-                    localGpsLocation = locationGps
-                    locationObj.put("longitude", localGpsLocation!!.longitude)
-                    locationObj.put("latitude", localGpsLocation!!.latitude)
-
-                    val cellInfoObject : CellInfo? = getActiveCellInfo(context)
-                    val cellJsonObject : JSONObject? = getCellInformation(cellInfoObject)
-                    Snackbar.make(root.context,root,"NewRecordFalse",Snackbar.LENGTH_SHORT).show()
-                    Thread {
-                        val checkExistanceOfCell : CellInformation? = homeViewModel.getCelInformationByCellId(cellJsonObject!!.getLong("cellId"))
-                        if (checkExistanceOfCell == null){
-                            AddDataToRepository(cellJsonObject,locationObj,true,homeViewModel)
-                            print("HERE HERE HERE HERE HERE HERE HERE")
-                            Snackbar.make(root.context,root,cellJsonObject.get("cellId").toString(),Snackbar.LENGTH_SHORT).show()
-                        }
-                        else{
-                            AddDataToRepository(cellJsonObject,locationObj,false,homeViewModel)
-                            Snackbar.make(root.context,root,"NewRecordFalse",Snackbar.LENGTH_SHORT).show()
-                        }
-                    }.start()
-
-
-                    //curruntLocation.accuracy
-                    //curruntLocation!!.longitude
-                    //curruntLocation!!.latitude
-                    //Snackbar.make(context,view,"sadfads",Snackbar.LENGTH_SHORT).show()
-                }
+        locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        var localGpsLocation : Location?
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                localGpsLocation = location
             }
-            var localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
+        locationRequest = LocationRequest.create().apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            smallestDisplacement = 0F
+        }
+        locationCallback = object : LocationCallback() {
+            val locationObj = JSONObject()
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                localGpsLocation = locationResult.lastLocation
+                locationObj.put("longitude", localGpsLocation!!.longitude)
+                locationObj.put("latitude", localGpsLocation!!.latitude)
 
-//            override fun onProviderEnabled(p0: String?) {}
-//
-//            override fun onProviderDisabled(p0: String?) {}
-        })
-        var localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                val cellInfoObject : CellInfo? = getActiveCellInfo(context)
+                val cellJsonObject : JSONObject? = getCellInformation(cellInfoObject)
+                Snackbar.make(root.context,root,"NewRecordFalse",Snackbar.LENGTH_SHORT).show()
+
+                Snackbar.make(root.context,root,"salam",Snackbar.LENGTH_SHORT).show()
+                AddDataToRepository(cellJsonObject,locationObj,true,homeViewModel)
+                print("HERE HERE HERE HERE HERE HERE HERE")
+
+                Thread {
+                 //   val checkExistanceOfCell : CellInformation? = homeViewModel.getCelInformationByCellId(cellJsonObject!!.getLong("cellId"))
+                 //   if (checkExistanceOfCell == null){
+                    //cellJsonObject?.get("cellId").toString()
+
+
+
+
+                 //   }
+                 //   else{
+//                        AddDataToRepository(cellJsonObject,locationObj,false,homeViewModel)
+//                        Snackbar.make(root.context,root,"NewRecordFalse",Snackbar.LENGTH_SHORT).show()
+                 //   }
+                }.start()
+            }
+        }
+
     }
 }

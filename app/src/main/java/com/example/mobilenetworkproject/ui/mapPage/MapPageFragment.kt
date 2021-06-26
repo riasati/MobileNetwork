@@ -184,34 +184,34 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         if (mapChoice == "LAC") {
             if (!lacColors.containsKey(cellInformation.cellLac)) {
-                lacColors.put(
-                    cellInformation.cellLac,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
+//                lacColors.put(
+//                    cellInformation.cellLac,
+//                    systemColors[(lacColors.size + 1) % 27]
+//                )
             }
             return lacColors[cellInformation.cellLac]
         } else if (mapChoice == "CELL") {
             if (!cellColors.containsKey(cellInformation.cellId)) {
-                cellColors.put(
-                    cellInformation.cellId,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
+//                cellColors.put(
+//                    cellInformation.cellId,
+//                    systemColors[(lacColors.size + 1) % 27]
+//                )
             }
             return cellColors[cellInformation.cellId]
         } else if (mapChoice == "PLMN") {
             if (!plmnColors.containsKey(cellInformation.cellPLMN)) {
-                plmnColors.put(
-                    cellInformation.cellPLMN,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
+//                plmnColors.put(
+//                    cellInformation.cellPLMN,
+//                    systemColors[(lacColors.size + 1) % 27]
+//                )
             }
             return plmnColors[cellInformation.cellPLMN]
         } else if (mapChoice == "TEC") {
             if (!tecColors.containsKey(cellInformation.cellGeneration)) {
-                tecColors.put(
-                    cellInformation.cellGeneration,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
+//                tecColors.put(
+//                    cellInformation.cellGeneration,
+//                    systemColors[(lacColors.size + 1) % 27]
+//                )
             }
             return tecColors[cellInformation.cellGeneration]
         } else {
