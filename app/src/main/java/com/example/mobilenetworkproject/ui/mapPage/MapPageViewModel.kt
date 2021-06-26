@@ -12,11 +12,11 @@ class MapPageViewModel : ViewModel() {
         return MapDataRepositoryImpl.getCellInformationByCellId(cell_id)
     }
 
-    fun selectAllCellsInformation(): List<CellInformation>{
+    fun selectAllCellsInformation(): List<CellInformation>?{
         return MapDataRepositoryImpl.selectAllCellsInformation()
     }
 
-    fun selectAllLocationInformation(): List<LocationInformation>{
+    fun selectAllLocationInformation(): List<LocationInformation>?{
         return MapDataRepositoryImpl.selectAllLocationInformation()
     }
 }

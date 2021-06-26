@@ -7,10 +7,10 @@ import com.example.mobilenetworkproject.model.domain.CellInformation
 @Dao
 interface CellInformationDAO {
     @Query("SELECT * FROM cell_information")
-    fun selectAllCelInformation(): List<CellInformationEntity>
+    fun selectAllCelInformation(): List<CellInformationEntity>?
 
     @Query("SELECT * FROM cell_information WHERE id=:cell_id")
-    fun getCelInformationByCellId(cell_id: Long): CellInformationEntity
+    fun getCelInformationByCellId(cell_id: Long): CellInformationEntity?
 
     @Insert
     fun insertCellInformation(cellInformation: CellInformationEntity)

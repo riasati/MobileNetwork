@@ -8,9 +8,10 @@ import com.example.mobilenetworkproject.model.data.local.mapper.LocationInformat
 //import com.example.mobilenetworkproject.model.data.local.dao.LocationInformationDAO
 
 object LocalLocationInformationDataSourceImpl : LocalLocationInformationDataSource {
-    override fun selectAllLocationInformation(): List<LocationInformation> {
+    override fun selectAllLocationInformation(): List<LocationInformation>? {
         val appDatabase = BaseApplication.appDatabase
-        return appDatabase.locationInformationDAO().selectAllLocationInformation().map {
+        val locationsInformation = appDatabase.locationInformationDAO().selectAllLocationInformation()?: return null
+        return locationsInformation.map {
                 locationInformationEntity-> LocationInformationMapper.mapEntityToDomain(locationInformationEntity)
         }
     }

@@ -7,17 +7,18 @@ import com.example.mobilenetworkproject.model.domain.CellInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
 
 object MapDataRepositoryImpl: MapDataRepository {
-    override fun getCellInformationByCellId(cell_id: Long): CellInformation {
+    override fun getCellInformationByCellId(cell_id: Long): CellInformation? {
         return LocalCellInformationDataSourceImpl.getCelInformationByCellId(cell_id)
     }
 
-    override fun selectAllCellsInformation(): List<CellInformation> {
+    override fun selectAllCellsInformation(): List<CellInformation>? {
         return LocalCellInformationDataSourceImpl.selectAllCellInformation()
     }
 
-    override fun selectAllLocationInformation(): List<LocationInformation> {
+    override fun selectAllLocationInformation(): List<LocationInformation>? {
         return LocalLocationInformationDataSourceImpl.selectAllLocationInformation()
     }
+
 
 
 }

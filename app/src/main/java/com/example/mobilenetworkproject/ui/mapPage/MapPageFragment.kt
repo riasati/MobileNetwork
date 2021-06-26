@@ -26,7 +26,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapChoice: String
     private lateinit var cellColors: Map<Long, Int>
     private lateinit var lacColors: Map<Int, Int>
-    private lateinit var tecColors: Map<Int, Int>
+    private lateinit var tecColors: Map<String, Int>
     private lateinit var plmnColors: Map<String, Int>
     private val POLYLINE_STROKE_WIDTH_PX = 12
     private val systemColors = arrayListOf<Int>(
@@ -89,7 +89,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addInformationToMap() {
-        val locationsInformation = mapPageViewModel.selectAllLocationInformation() ?: return
+        val locationsInformation = mapPageViewModel.selectAllLocationInformation()?:return
         if (locationsInformation.isEmpty()) {
             return
         }
@@ -137,7 +137,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         cellId: Long
     ) {
         // TODO ADD CUSTOM INFORMATION
-        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId) ?: return
+        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId)?:return
         myMap.addMarker(
             MarkerOptions()
                 .position(LatLng(cellLatitude, cellLongitude))
@@ -175,8 +175,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         polyline.jointType = JointType.ROUND
     }
 
-    private fun getSuitableColor(currentLocationInformation: LocationInformation): Int?{
-        val cellInformation = mapPageViewModel.getCellInformationByCellId(currentLocationInformation.cellId)?: return null
+    private fun getSuitableColor(currentLocationInformation: LocationInformation): Int? {
+        val cellInformation =
+            mapPageViewModel.getCellInformationByCellId(currentLocationInformation.cellId)
+                ?:return null
+        if (mapChoice == null) {
+            return null
+        }
         if (mapChoice == "LAC") {
             if (!lacColors.containsKey(cellInformation.cellLac)) {
                 lacColors.put(
