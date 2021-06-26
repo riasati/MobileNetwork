@@ -71,10 +71,10 @@ class HomeFragment : Fragment() {
             val cellInfo = CellInformation(
                 cellObj.getString("cellGeneration"),
                 cellObj.getLong("cellId"),
-                "salam",
-                120,
+                cellObj.getString("cellPLMN"),
+                cellObj.getInt("cellARFCN"),
                 cellObj.getInt("cellLac"),
-            150
+                cellObj.getInt("cellCode")
             )
             homeViewModel.insertCellInformation(cellInfo)
         }
@@ -109,47 +109,64 @@ class HomeFragment : Fragment() {
    //@RequiresApi(Build.VERSION_CODES.Q)
    fun getCellInformation(cellInfo: CellInfo?): JSONObject? {
         val cellObj = JSONObject()
-        if (cellInfo is CellInfoNr) {
-            val NrCellIdentity: CellIdentityNr = cellInfo.cellIdentity as CellIdentityNr
-            cellObj.put("cellGeneration", "NR")
-            cellObj.put("cellId", NrCellIdentity.nci)
-            cellObj.put("cellPLMN", NrCellIdentity.mccString + NrCellIdentity.mncString)
-            cellObj.put("cellARFCN", NrCellIdentity.nrarfcn)
-            cellObj.put("cellLac", NrCellIdentity.tac)
-            cellObj.put("cellCode", NrCellIdentity.pci)
-            return cellObj
-        }
+       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+           if (cellInfo is CellInfoNr) {
+               val NrCellIdentity: CellIdentityNr = cellInfo.cellIdentity as CellIdentityNr
+               cellObj.put("cellGeneration", "NR")
+               cellObj.put("cellId", NrCellIdentity.nci)
+               cellObj.put("cellPLMN", NrCellIdentity.mccString + NrCellIdentity.mncString)
+               cellObj.put("cellARFCN", NrCellIdentity.nrarfcn)
+               cellObj.put("cellLac", NrCellIdentity.tac)
+               cellObj.put("cellCode", NrCellIdentity.pci)
+               return cellObj
+           }
+       }
         if (cellInfo is CellInfoGsm) {
             val GsmCellIdentity = cellInfo.cellIdentity
             cellObj.put("cellGeneration", "GSM")
             cellObj.put("cellId", GsmCellIdentity.cid)
-            cellObj.put("cellPLMN", GsmCellIdentity.mobileNetworkOperator)
-            cellObj.put("cellARFCN", GsmCellIdentity.arfcn)
             cellObj.put("cellLac", GsmCellIdentity.lac)
-            cellObj.put("cellCode", GsmCellIdentity.bsic)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+                cellObj.put("cellPLMN", GsmCellIdentity.mobileNetworkOperator)
+                cellObj.put("cellARFCN", GsmCellIdentity.arfcn)
+                cellObj.put("cellCode", GsmCellIdentity.bsic)
+            }
+            else{
+                cellObj.put("cellPLMN", "null")
+                cellObj.put("cellARFCN", 0)
+                cellObj.put("cellCode", 0)
+            }
             return cellObj
         }
         if (cellInfo is CellInfoLte) {
             val LteCellIdentity = cellInfo.cellIdentity
             cellObj.put("cellGeneration", "LTE")
             cellObj.put("cellId", LteCellIdentity.ci)
-            cellObj.put("cellPLMN", LteCellIdentity.mobileNetworkOperator)
-            cellObj.put("cellARFCN", LteCellIdentity.earfcn)
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+                cellObj.put("cellPLMN", LteCellIdentity.mobileNetworkOperator)
+                cellObj.put("cellARFCN", LteCellIdentity.earfcn)
+            }
+            else{
+                cellObj.put("cellPLMN", "null")
+                cellObj.put("cellARFCN", 0)
+            }
             cellObj.put("cellLac", LteCellIdentity.tac)
             cellObj.put("cellCode", LteCellIdentity.pci)
             return cellObj
         }
-        if (cellInfo is CellInfoWcdma) {
-            val WcdmaCell = cellInfo as CellInfoWcdma
-            val WcdmaCellIdentity = WcdmaCell.cellIdentity
-            cellObj.put("cellGeneration", "WCDMA")
-            cellObj.put("cellId", WcdmaCellIdentity.cid)
-            cellObj.put("cellPLMN", WcdmaCellIdentity.mobileNetworkOperator)
-            cellObj.put("cellARFCN", WcdmaCellIdentity.uarfcn)
-            cellObj.put("cellLac", WcdmaCellIdentity.lac)
-            cellObj.put("cellCode", WcdmaCellIdentity.psc)
-            return cellObj
-        }
+       if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+           if (cellInfo is CellInfoWcdma) {
+               val WcdmaCell = cellInfo as CellInfoWcdma
+               val WcdmaCellIdentity = WcdmaCell.cellIdentity
+               cellObj.put("cellGeneration", "WCDMA")
+               cellObj.put("cellId", WcdmaCellIdentity.cid)
+               cellObj.put("cellPLMN", WcdmaCellIdentity.mobileNetworkOperator)
+               cellObj.put("cellARFCN", WcdmaCellIdentity.uarfcn)
+               cellObj.put("cellLac", WcdmaCellIdentity.lac)
+               cellObj.put("cellCode", WcdmaCellIdentity.psc)
+               return cellObj
+           }
+       }
         return null
     }
 
@@ -158,8 +175,7 @@ class HomeFragment : Fragment() {
     fun getLocation(root: View,context: Context,homeViewModel: HomeViewModel){
 
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        var localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0F, object :
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0F, object :
             LocationListener {
             @RequiresApi(Build.VERSION_CODES.Q)
             override fun onLocationChanged(locationGps: Location) {
@@ -192,11 +208,13 @@ class HomeFragment : Fragment() {
                     //Snackbar.make(context,view,"sadfads",Snackbar.LENGTH_SHORT).show()
                 }
             }
+            var localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
 
 //            override fun onProviderEnabled(p0: String?) {}
 //
 //            override fun onProviderDisabled(p0: String?) {}
         })
+        var localGpsLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
     }
 }
