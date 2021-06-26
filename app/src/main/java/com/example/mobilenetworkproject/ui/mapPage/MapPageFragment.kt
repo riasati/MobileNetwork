@@ -175,7 +175,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         polyline.jointType = JointType.ROUND
     }
 
-    private fun getSuitableColor(currentLocationInformation: LocationInformation): Int? {
+    private fun getSuitableColor(currentLocationInformation: LocationInformation): Int?{
         val cellInformation = mapPageViewModel.getCellInformationByCellId(currentLocationInformation.cellId)?: return null
         if (mapChoice == "LAC") {
             if (!lacColors.containsKey(cellInformation.cellLac)) {
