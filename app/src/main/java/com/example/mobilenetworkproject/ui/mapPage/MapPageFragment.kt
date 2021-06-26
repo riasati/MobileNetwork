@@ -2,6 +2,7 @@ package com.example.mobilenetworkproject.ui.mapPage
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.WallpaperColors
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.mobilenetworkproject.R
+import com.example.mobilenetworkproject.model.domain.CellInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -21,17 +23,51 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mapPageViewModel: MapPageViewModel
     private lateinit var myMap: GoogleMap
+    private lateinit var mapChoice: String
+    private lateinit var cellColors: Map<Long, Int>
+    private lateinit var lacColors: Map<Int, Int>
+    private lateinit var tecColors: Map<Int, Int>
+    private lateinit var plmnColors: Map<String, Int>
     private val POLYLINE_STROKE_WIDTH_PX = 12
+    private val systemColors = arrayListOf<Int>(
+        R.color.number1,
+        R.color.number2,
+        R.color.number3,
+        R.color.number4,
+        R.color.number5,
+        R.color.number6,
+        R.color.number7,
+        R.color.number8,
+        R.color.number9,
+        R.color.number10,
+        R.color.number11,
+        R.color.number12,
+        R.color.number13,
+        R.color.number14,
+        R.color.number15,
+        R.color.number16,
+        R.color.number17,
+        R.color.number18,
+        R.color.number19,
+        R.color.number20,
+        R.color.number21,
+        R.color.number22,
+        R.color.number23,
+        R.color.number24,
+        R.color.number25,
+        R.color.number26,
+        R.color.number27,
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_map)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapPageViewModel = ViewModelProviders.of(this).get(MapPageViewModel::class.java)
+        mapChoice = savedInstanceState?.getString("CHOICE").toString()
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
     }
 
     /**
@@ -53,7 +89,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addInformationToMap() {
-        val locationsInformation = mapPageViewModel.selectAllLocationInformation()
+        val locationsInformation = mapPageViewModel.selectAllLocationInformation() ?: return
         if (locationsInformation.isEmpty()) {
             return
         }
@@ -72,15 +108,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             nextLocationInformation = locationsInformation[index + 1]
             this.addPolylineToMap(
-                LatLng(
-                    currentLocationInformation.LocationLatitude,
-                    currentLocationInformation.LocationLongitude
-                ),
-                LatLng(
-                    nextLocationInformation.LocationLatitude,
-                    nextLocationInformation.LocationLongitude
-                ),
-                currentLocationInformation.cellId
+                currentLocationInformation = currentLocationInformation,
+                nextLocationInformation = nextLocationInformation
             )
 
         }
@@ -117,24 +146,72 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun addPolylineToMap(from: LatLng, to: LatLng, cellId: Long) {
+    private fun addPolylineToMap(
+        currentLocationInformation: LocationInformation,
+        nextLocationInformation: LocationInformation
+    ) {
         val polyline = myMap.addPolyline(
             PolylineOptions()
                 .clickable(true)
                 .add(
-                    from,
-                    to
+                    LatLng(
+                        currentLocationInformation.LocationLatitude,
+                        currentLocationInformation.LocationLongitude
+                    ),
+                    LatLng(
+                        nextLocationInformation.LocationLatitude,
+                        nextLocationInformation.LocationLongitude
+                    ),
                 )
         )
-        this.stylePolyline(polyline, cellId)
+        this.stylePolyline(polyline, currentLocationInformation)
     }
 
-    private fun stylePolyline(polyline: Polyline, cellId: Long) {
-        // TODO CHECK COLOR OF POLYLINE
+    private fun stylePolyline(polyline: Polyline, currentLocationInformation: LocationInformation) {
         polyline.endCap = RoundCap()
         polyline.width = POLYLINE_STROKE_WIDTH_PX.toFloat()
-        polyline.color = COLOR_BLACK_ARGB
+        val color = this.getSuitableColor(currentLocationInformation) ?: R.color.colorBlack
+        polyline.color = color
         polyline.jointType = JointType.ROUND
+    }
+
+    private fun getSuitableColor(currentLocationInformation: LocationInformation): Int? {
+        val cellInformation = mapPageViewModel.getCellInformationByCellId(currentLocationInformation.cellId)?: return null
+        if (mapChoice == "LAC") {
+            if (!lacColors.containsKey(cellInformation.cellLac)) {
+                lacColors.put(
+                    cellInformation.cellLac,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
+            }
+            return lacColors[cellInformation.cellLac]
+        } else if (mapChoice == "CELL") {
+            if (!cellColors.containsKey(cellInformation.cellId)) {
+                cellColors.put(
+                    cellInformation.cellId,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
+            }
+            return cellColors[cellInformation.cellId]
+        } else if (mapChoice == "PLMN") {
+            if (!plmnColors.containsKey(cellInformation.cellPLMN)) {
+                plmnColors.put(
+                    cellInformation.cellPLMN,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
+            }
+            return plmnColors[cellInformation.cellPLMN]
+        } else if (mapChoice == "TEC") {
+            if (!tecColors.containsKey(cellInformation.cellGeneration)) {
+                tecColors.put(
+                    cellInformation.cellGeneration,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
+            }
+            return tecColors[cellInformation.cellGeneration]
+        } else {
+            return null
+        }
     }
 }
 

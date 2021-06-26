@@ -8,7 +8,7 @@ import com.example.mobilenetworkproject.model.domain.CellInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
 
 class MapPageViewModel : ViewModel() {
-    fun getCellInformationByCellId(cell_id: Long): CellInformation{
+    fun getCellInformationByCellId(cell_id: Long): CellInformation?{
         return MapDataRepositoryImpl.getCellInformationByCellId(cell_id)
     }
 
