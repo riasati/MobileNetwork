@@ -33,6 +33,8 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Looper
+import android.telephony.cdma.CdmaCellLocation
+import android.telephony.gsm.GsmCellLocation
 import com.google.android.gms.common.GooglePlayServicesUtilLight.isGooglePlayServicesAvailable
 import com.google.android.gms.location.*
 
@@ -107,6 +109,25 @@ class HomeFragment : Fragment() {
        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
            return null
        }
+    //   if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+           @Suppress("DEPRECATION")
+           val cellLocation : CellLocation = tel.cellLocation
+           @Suppress("DEPRECATION")
+           val cellLocation2 = tel.neighboringCellInfo
+           if (cellLocation is GsmCellLocation){
+               val cellLocationIdentity: GsmCellLocation = cellLocation as GsmCellLocation
+               val a = cellLocationIdentity.cid
+               val b = cellLocationIdentity.lac
+               val c = cellLocationIdentity.psc
+           }
+           if (cellLocation is CdmaCellLocation){
+               val cellLocationIdentity: CdmaCellLocation = cellLocation as CdmaCellLocation
+               val a = cellLocationIdentity.baseStationId
+               val b = cellLocationIdentity.networkId
+               val c = cellLocationIdentity.systemId
+           }
+
+    //   }
         val cellInfos = tel.allCellInfo ?: return null
         var result: CellInfo? = null
         for (i in cellInfos.indices) {
@@ -125,64 +146,64 @@ class HomeFragment : Fragment() {
     //@RequiresApi(Build.VERSION_CODES.Q)
     fun getCellInformation(cellInfo: CellInfo?): JSONObject? {
         val cellObj = JSONObject()
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-            if (cellInfo is CellInfoNr) {
-                val NrCellIdentity: CellIdentityNr = cellInfo.cellIdentity as CellIdentityNr
-                cellObj.put("cellGeneration", "NR")
-                cellObj.put("cellId", NrCellIdentity.nci)
-                cellObj.put("cellPLMN", NrCellIdentity.mccString + NrCellIdentity.mncString)
-                cellObj.put("cellARFCN", NrCellIdentity.nrarfcn)
-                cellObj.put("cellLac", NrCellIdentity.tac)
-                cellObj.put("cellCode", NrCellIdentity.pci)
-                return cellObj
-            }
-        }
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+//            if (cellInfo is CellInfoNr) {
+//                val NrCellIdentity: CellIdentityNr = cellInfo.cellIdentity as CellIdentityNr
+//                cellObj.put("cellGeneration", "NR")
+//                cellObj.put("cellId", NrCellIdentity.nci)
+//                cellObj.put("cellPLMN", NrCellIdentity.mccString + NrCellIdentity.mncString)
+//                cellObj.put("cellARFCN", NrCellIdentity.nrarfcn)
+//                cellObj.put("cellLac", NrCellIdentity.tac)
+//                cellObj.put("cellCode", NrCellIdentity.pci)
+//                return cellObj
+//            }
+//        }
         if (cellInfo is CellInfoGsm) {
             val GsmCellIdentity = cellInfo.cellIdentity
             cellObj.put("cellGeneration", "GSM")
             cellObj.put("cellId", GsmCellIdentity.cid)
             cellObj.put("cellLac", GsmCellIdentity.lac)
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-                cellObj.put("cellPLMN", GsmCellIdentity.mobileNetworkOperator)
-                cellObj.put("cellARFCN", GsmCellIdentity.arfcn)
-                cellObj.put("cellCode", GsmCellIdentity.bsic)
-            }
-            else{
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+//                cellObj.put("cellPLMN", GsmCellIdentity.mobileNetworkOperator)
+//                cellObj.put("cellARFCN", GsmCellIdentity.arfcn)
+//                cellObj.put("cellCode", GsmCellIdentity.bsic)
+//            }
+//            else{
                 cellObj.put("cellPLMN", "null")
                 cellObj.put("cellARFCN", 0)
                 cellObj.put("cellCode", 0)
-            }
+          //  }
             return cellObj
         }
         if (cellInfo is CellInfoLte) {
             val LteCellIdentity = cellInfo.cellIdentity
             cellObj.put("cellGeneration", "LTE")
             cellObj.put("cellId", LteCellIdentity.ci)
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-                cellObj.put("cellPLMN", LteCellIdentity.mobileNetworkOperator)
-                cellObj.put("cellARFCN", LteCellIdentity.earfcn)
-            }
-            else{
+//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+//                cellObj.put("cellPLMN", LteCellIdentity.mobileNetworkOperator)
+//                cellObj.put("cellARFCN", LteCellIdentity.earfcn)
+//            }
+//            else{
                 cellObj.put("cellPLMN", "null")
                 cellObj.put("cellARFCN", 0)
-            }
+        //    }
             cellObj.put("cellLac", LteCellIdentity.tac)
             cellObj.put("cellCode", LteCellIdentity.pci)
             return cellObj
         }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-            if (cellInfo is CellInfoWcdma) {
-                val WcdmaCell = cellInfo as CellInfoWcdma
-                val WcdmaCellIdentity = WcdmaCell.cellIdentity
-                cellObj.put("cellGeneration", "WCDMA")
-                cellObj.put("cellId", WcdmaCellIdentity.cid)
-                cellObj.put("cellPLMN", WcdmaCellIdentity.mobileNetworkOperator)
-                cellObj.put("cellARFCN", WcdmaCellIdentity.uarfcn)
-                cellObj.put("cellLac", WcdmaCellIdentity.lac)
-                cellObj.put("cellCode", WcdmaCellIdentity.psc)
-                return cellObj
-            }
-        }
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+//            if (cellInfo is CellInfoWcdma) {
+//                val WcdmaCell = cellInfo as CellInfoWcdma
+//                val WcdmaCellIdentity = WcdmaCell.cellIdentity
+//                cellObj.put("cellGeneration", "WCDMA")
+//                cellObj.put("cellId", WcdmaCellIdentity.cid)
+//                cellObj.put("cellPLMN", WcdmaCellIdentity.mobileNetworkOperator)
+//                cellObj.put("cellARFCN", WcdmaCellIdentity.uarfcn)
+//                cellObj.put("cellLac", WcdmaCellIdentity.lac)
+//                cellObj.put("cellCode", WcdmaCellIdentity.psc)
+//                return cellObj
+//            }
+//        }
         return null
     }
 
