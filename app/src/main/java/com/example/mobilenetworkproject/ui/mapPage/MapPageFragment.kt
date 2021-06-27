@@ -89,7 +89,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addInformationToMap() {
-        val locationsInformation = mapPageViewModel.selectAllLocationInformation()?:return
+        val locationsInformation = mapPageViewModel.selectAllLocationInformation() ?: return
         if (locationsInformation.isEmpty()) {
             return
         }
@@ -137,7 +137,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         cellId: Long
     ) {
         // TODO ADD CUSTOM INFORMATION
-        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId)?:return
+        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId) ?: return
         myMap.addMarker(
             MarkerOptions()
                 .position(LatLng(cellLatitude, cellLongitude))
@@ -178,7 +178,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getSuitableColor(currentLocationInformation: LocationInformation): Int? {
         val cellInformation =
             mapPageViewModel.getCellInformationByCellId(currentLocationInformation.cellId)
-                ?:return null
+                ?: return null
         if (mapChoice == null) {
             return null
         }
