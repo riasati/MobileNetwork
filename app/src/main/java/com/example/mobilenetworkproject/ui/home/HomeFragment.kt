@@ -1,12 +1,11 @@
 package com.example.mobilenetworkproject.ui.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
-import android.os.AsyncTask
-import android.os.Build
 import android.os.Bundle
 import android.telephony.*
 import android.view.LayoutInflater
@@ -14,34 +13,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import com.example.mobilenetworkproject.R
-import com.example.mobilenetworkproject.model.data.repository.impl.HomeDataRepositoryImpl
-import com.example.mobilenetworkproject.model.domain.CellInformation
-import org.json.JSONObject
-import com.example.mobilenetworkproject.model.data.repository.impl.HomeDataRepositoryImpl.insertCellInformation
-import com.example.mobilenetworkproject.model.data.repository.impl.HomeDataRepositoryImpl.insertLocationInformation
-import com.example.mobilenetworkproject.model.domain.LocationInformation
-import com.google.android.material.snackbar.Snackbar
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Looper
-import android.telephony.cdma.CdmaCellLocation
-import android.telephony.gsm.GsmCellLocation
-import com.google.android.gms.common.GooglePlayServicesUtilLight.isGooglePlayServicesAvailable
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
+import com.example.mobilenetworkproject.R
+import com.example.mobilenetworkproject.model.domain.CellInformation
+import com.example.mobilenetworkproject.model.domain.LocationInformation
 import com.google.android.gms.location.*
+import org.json.JSONObject
 
 
-interface RecyclerViewClickListener {
-    fun recyclerViewListClicked(v: View?, position: Int)
-}
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel
@@ -59,30 +40,29 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         val button = root.findViewById<Button>(R.id.startButton)
         button.setOnClickListener(View.OnClickListener {
-            if (button.text == "Start"){
+            if (button.text == "Start") {
                 button.text = "Finished"
-                getLocation(root,root.context,homeViewModel)
+                getLocation(root, root.context, homeViewModel)
                 startLocationUpdates()
-            }
-            else if (button.text == "Finished"){
+            } else if (button.text == "Finished") {
                 button.text = "Start"
                 stopLocationUpdates()
-                Snackbar.make(root.context,root,"Click",Snackbar.LENGTH_SHORT).show()
+                Toast.makeText(root.context, "Finished", Toast.LENGTH_SHORT).show()
             }
-
-            //Toast.makeText(root.context,"button 3 clicked", Toast.LENGTH_SHORT)
         })
 
         return root
     }
-    fun AddDataToRepository(cellObj: JSONObject?, locationObj: JSONObject?,sendCellToReposity : Boolean,homeViewModel: HomeViewModel): Void? {
+    fun addDataToRepository(
+        cellObj: JSONObject?,
+        locationObj: JSONObject?,
+        sendCellToRepository: Boolean,
+        homeViewModel: HomeViewModel
+    ): Void? {
         if (cellObj == null || locationObj == null) {
             return null
         }
-//        cellObj.getString("cellPLMN"),
-//        cellObj.getInt("cellARFCN"),
-//        cellObj.getInt("cellCode")
-        if (sendCellToReposity){
+        if (sendCellToRepository){
             val cellInfo = CellInformation(
                 cellObj.getString("cellGeneration"),
                 cellObj.getLong("cellId"),
@@ -93,41 +73,21 @@ class HomeFragment : Fragment() {
             )
             homeViewModel.insertCellInformation(cellInfo)
         }
-        val LocationInfo = LocationInformation(
+        val locationInfo = LocationInformation(
             cellObj.getLong("cellId"),
             locationObj.getDouble("longitude"),
             locationObj.getDouble("latitude")
         )
-        homeViewModel.insertLocationInformation(LocationInfo)
+        homeViewModel.insertLocationInformation(locationInfo)
         return null
     }
 
-   // @SuppressLint("MissingPermission")
     fun getActiveCellInfo(context: Context): CellInfo? {
         val tel = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         var numRegisteredCellInfo = 0
        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
            return null
        }
-    //   if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-           @Suppress("DEPRECATION")
-           val cellLocation : CellLocation = tel.cellLocation
-           @Suppress("DEPRECATION")
-           val cellLocation2 = tel.neighboringCellInfo
-           if (cellLocation is GsmCellLocation){
-               val cellLocationIdentity: GsmCellLocation = cellLocation as GsmCellLocation
-               val a = cellLocationIdentity.cid
-               val b = cellLocationIdentity.lac
-               val c = cellLocationIdentity.psc
-           }
-           if (cellLocation is CdmaCellLocation){
-               val cellLocationIdentity: CdmaCellLocation = cellLocation as CdmaCellLocation
-               val a = cellLocationIdentity.baseStationId
-               val b = cellLocationIdentity.networkId
-               val c = cellLocationIdentity.systemId
-           }
-
-    //   }
         val cellInfos = tel.allCellInfo ?: return null
         var result: CellInfo? = null
         for (i in cellInfos.indices) {
@@ -143,71 +103,97 @@ class HomeFragment : Fragment() {
         return result
     }
 
-    //@RequiresApi(Build.VERSION_CODES.Q)
     fun getCellInformation(cellInfo: CellInfo?): JSONObject? {
         val cellObj = JSONObject()
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-//            if (cellInfo is CellInfoNr) {
-//                val NrCellIdentity: CellIdentityNr = cellInfo.cellIdentity as CellIdentityNr
-//                cellObj.put("cellGeneration", "NR")
-//                cellObj.put("cellId", NrCellIdentity.nci)
-//                cellObj.put("cellPLMN", NrCellIdentity.mccString + NrCellIdentity.mncString)
-//                cellObj.put("cellARFCN", NrCellIdentity.nrarfcn)
-//                cellObj.put("cellLac", NrCellIdentity.tac)
-//                cellObj.put("cellCode", NrCellIdentity.pci)
-//                return cellObj
-//            }
-//        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
+            if (cellInfo is CellInfoNr) {
+                val NrCellIdentity: CellIdentityNr = cellInfo.cellIdentity as CellIdentityNr
+                cellObj.put("cellGeneration", "NR")
+                cellObj.put("cellId", NrCellIdentity.nci)
+                cellObj.put("cellPLMN", NrCellIdentity.mccString + NrCellIdentity.mncString)
+                cellObj.put("cellARFCN", NrCellIdentity.nrarfcn)
+                cellObj.put("cellLac", NrCellIdentity.tac)
+                cellObj.put("cellCode", NrCellIdentity.pci)
+                return cellObj
+            }
+        }
         if (cellInfo is CellInfoGsm) {
             val GsmCellIdentity = cellInfo.cellIdentity
             cellObj.put("cellGeneration", "GSM")
             cellObj.put("cellId", GsmCellIdentity.cid)
             cellObj.put("cellLac", GsmCellIdentity.lac)
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-//                cellObj.put("cellPLMN", GsmCellIdentity.mobileNetworkOperator)
-//                cellObj.put("cellARFCN", GsmCellIdentity.arfcn)
-//                cellObj.put("cellCode", GsmCellIdentity.bsic)
-//            }
-//            else{
-                cellObj.put("cellPLMN", "null")
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                @Suppress("DEPRECATION")
+                cellObj.put(
+                    "cellPLMN",
+                    GsmCellIdentity.mcc.toString() + GsmCellIdentity.mnc.toString()
+                )
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    cellObj.put("cellARFCN", GsmCellIdentity.arfcn)
+                    cellObj.put("cellCode", GsmCellIdentity.bsic)
+                }
+                else{
+                    cellObj.put("cellARFCN", 0)
+                    cellObj.put("cellCode", 0)
+                }
+            }
+            else{
+                cellObj.put("cellPLMN", "43211")
                 cellObj.put("cellARFCN", 0)
                 cellObj.put("cellCode", 0)
-          //  }
+            }
             return cellObj
         }
         if (cellInfo is CellInfoLte) {
             val LteCellIdentity = cellInfo.cellIdentity
             cellObj.put("cellGeneration", "LTE")
             cellObj.put("cellId", LteCellIdentity.ci)
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-//                cellObj.put("cellPLMN", LteCellIdentity.mobileNetworkOperator)
-//                cellObj.put("cellARFCN", LteCellIdentity.earfcn)
-//            }
-//            else{
-                cellObj.put("cellPLMN", "null")
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+                @Suppress("DEPRECATION")
+                cellObj.put(
+                    "cellPLMN",
+                    LteCellIdentity.mcc.toString() + LteCellIdentity.mnc.toString()
+                )
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    cellObj.put("cellARFCN", LteCellIdentity.earfcn)
+                }
+                else{
+                    cellObj.put("cellARFCN", 0)
+                }
+            }
+            else{
+                cellObj.put("cellPLMN", "43211")
                 cellObj.put("cellARFCN", 0)
-        //    }
+            }
             cellObj.put("cellLac", LteCellIdentity.tac)
             cellObj.put("cellCode", LteCellIdentity.pci)
             return cellObj
         }
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q){
-//            if (cellInfo is CellInfoWcdma) {
-//                val WcdmaCell = cellInfo as CellInfoWcdma
-//                val WcdmaCellIdentity = WcdmaCell.cellIdentity
-//                cellObj.put("cellGeneration", "WCDMA")
-//                cellObj.put("cellId", WcdmaCellIdentity.cid)
-//                cellObj.put("cellPLMN", WcdmaCellIdentity.mobileNetworkOperator)
-//                cellObj.put("cellARFCN", WcdmaCellIdentity.uarfcn)
-//                cellObj.put("cellLac", WcdmaCellIdentity.lac)
-//                cellObj.put("cellCode", WcdmaCellIdentity.psc)
-//                return cellObj
-//            }
-//        }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+            if (cellInfo is CellInfoWcdma) {
+                val WcdmaCell = cellInfo as CellInfoWcdma
+                val WcdmaCellIdentity = WcdmaCell.cellIdentity
+                cellObj.put("cellGeneration", "WCDMA")
+                cellObj.put("cellId", WcdmaCellIdentity.cid)
+                @Suppress("DEPRECATION")
+                cellObj.put(
+                    "cellPLMN",
+                    WcdmaCellIdentity.mcc.toString() + WcdmaCellIdentity.mnc.toString()
+                )
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                    cellObj.put("cellARFCN", WcdmaCellIdentity.uarfcn)
+                }
+                else{
+                    cellObj.put("cellARFCN", 0)
+                }
+                cellObj.put("cellLac", WcdmaCellIdentity.lac)
+                cellObj.put("cellCode", WcdmaCellIdentity.psc)
+                return cellObj
+            }
+        }
         return null
     }
 
-    //    @SuppressLint("ServiceCast")
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
@@ -221,21 +207,21 @@ class HomeFragment : Fragment() {
         )
     }
 
-    @SuppressLint("MissingPermission","ServiceCast")
-    fun getLocation(root: View,context: Context,homeViewModel: HomeViewModel){
+    @SuppressLint("MissingPermission")
+    fun getLocation(root: View, context: Context, homeViewModel: HomeViewModel){
 
         locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         var localGpsLocation : Location?
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
+            .addOnSuccessListener { location: Location? ->
                 localGpsLocation = location
             }
         locationRequest = LocationRequest.create().apply {
             interval = 10000
             fastestInterval = 5000
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            smallestDisplacement = 0F
+            smallestDisplacement = 10F
         }
         locationCallback = object : LocationCallback() {
             val locationObj = JSONObject()
@@ -247,25 +233,30 @@ class HomeFragment : Fragment() {
 
                 val cellInfoObject : CellInfo? = getActiveCellInfo(context)
                 val cellJsonObject : JSONObject? = getCellInformation(cellInfoObject)
-                Snackbar.make(root.context,root,"NewRecordFalse",Snackbar.LENGTH_SHORT).show()
-
-                Snackbar.make(root.context,root,"salam",Snackbar.LENGTH_SHORT).show()
-                AddDataToRepository(cellJsonObject,locationObj,true,homeViewModel)
-                print("HERE HERE HERE HERE HERE HERE HERE")
 
                 Thread {
-                 //   val checkExistanceOfCell : CellInformation? = homeViewModel.getCelInformationByCellId(cellJsonObject!!.getLong("cellId"))
-                 //   if (checkExistanceOfCell == null){
-                    //cellJsonObject?.get("cellId").toString()
-
-
-
-
-                 //   }
-                 //   else{
-//                        AddDataToRepository(cellJsonObject,locationObj,false,homeViewModel)
-//                        Snackbar.make(root.context,root,"NewRecordFalse",Snackbar.LENGTH_SHORT).show()
-                 //   }
+                    if (cellJsonObject != null){
+                        val checkExistanceOfCell : CellInformation? = homeViewModel.getCelInformationByCellId(
+                            cellJsonObject.getLong(
+                                "cellId"
+                            )
+                        )
+                        if (checkExistanceOfCell == null){
+                            addDataToRepository(cellJsonObject, locationObj, true, homeViewModel)
+                            activity!!.runOnUiThread {
+                                Toast.makeText(activity, "add cell with id " + cellJsonObject.getString("cellId"), Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        else{
+                            addDataToRepository(cellJsonObject, locationObj, false, homeViewModel)
+                            activity!!.runOnUiThread {
+                                Toast.makeText(activity, "add new location", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+                    activity!!.runOnUiThread {
+                        Toast.makeText(activity, "add new location" + locationObj.get("longitude").toString(), Toast.LENGTH_SHORT).show()
+                    }
                 }.start()
             }
         }
