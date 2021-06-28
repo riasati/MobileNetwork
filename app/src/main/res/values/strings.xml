@@ -8,9 +8,17 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_about_us">About Us</string>
+<!--    <string name="menu_about_us">About Us</string>-->
     <string name="label_choice_page">Choice Map</string>
     <string name="label_map_page">Map Page</string>
-    <string name="menu_tourist_place_page">Tourist Place Page</string>
+<!--    <string name="menu_tourist_place_page">Tourist Place Page</string>-->
     <string name="start">Start</string>
+    <string name="application_description">we get the cell information and display it on the map with grouping of LAC, CELL ID, TEC, PLMN</string>
+    <string name="button_description">the process of geting information begins with pressing of the start button and finished with pressing the finished button</string>
+    <string name="permission_description">you have to grant permission and turn on the internet and GPS to use properly of app</string>
+    <string name="choose_your_map">Choose your map</string>
+    <string name="lac">LAC</string>
+    <string name="cell_id">CELL ID</string>
+    <string name="tec">Tec</string>
+    <string name="plmn">PLMN</string>
 </resources>
