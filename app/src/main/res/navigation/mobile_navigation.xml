@@ -3,32 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/map_page">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.mobilenetworkproject.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_nav_home_to_nav_slide_show"
-            app:destination="@id/nav_tourist_place_page" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/nav_about_us"
+        android:id="@+id/choice_map"
         android:name="com.example.mobilenetworkproject.ui.choiceMpaPage.ChoicePageFragment"
-        android:label="@string/menu_about_us"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/nav_tourist_place_page"
-        android:name="com.example.mobilenetworkproject.ui.mapPage.MapPageFragment"
-        android:label="@string/menu_tourist_place_page"
-        tools:layout="@layout/fragment_home" >
-        <argument
-            android:name="idArg"
-            app:argType="integer"
-            android:defaultValue="-1" />
+        android:label="@string/choice_map"
+        tools:layout="@layout/fragment_choice_map" >
+        <action
+            android:id="@+id/choice_map_action"
+            app:destination="@id/map_page" />
     </fragment>
+
+<!--    <activity-->
+<!--        android:id="@+id/home"-->
+<!--        android:name="com.example.mobilenetworkproject.ui.mapPage.Ho"-->
+<!--        android:label="@string/menu_about_us"-->
+<!--        tools:layout="@layout/fragment_home" />-->
+
+    <activity
+        android:id="@+id/map_page"
+        android:name="com.example.mobilenetworkproject.ui.mapPage.MapActivity"
+        android:label="@string/menu_tourist_place_page"
+        tools:layout="@layout/fragment_map" >
+    </activity>
 </navigation>

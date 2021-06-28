@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -28,28 +27,28 @@ class ChoicePageFragment : Fragment() {
             val bundle = Bundle()
             bundle.putString("CHOICE", "LAC")
             // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.choice_map_action, bundle)
         }
         val cellButton: Button = root.findViewById(R.id.cell_button)
         cellButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("CHOICE", "CELL")
             // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.choice_map_action, bundle)
         }
         val plmnButton: Button = root.findViewById(R.id.plmn_button)
         plmnButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("CHOICE", "PLMN")
             // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.choice_map_action, bundle)
         }
         val tecButton: Button = root.findViewById(R.id.tec_button)
         tecButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("CHOICE", "TEC")
             // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.choice_map_action, bundle)
         }
         return root
     }

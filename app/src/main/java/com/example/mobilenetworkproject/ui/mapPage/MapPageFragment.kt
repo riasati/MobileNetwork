@@ -24,10 +24,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapPageViewModel: MapPageViewModel
     private lateinit var myMap: GoogleMap
     private lateinit var mapChoice: String
-    private lateinit var cellColors: Map<Long, Int>
-    private lateinit var lacColors: Map<Int, Int>
-    private lateinit var tecColors: Map<String, Int>
-    private lateinit var plmnColors: Map<String, Int>
+    private var cellColors = mutableMapOf<Long, Int>()
+    private var lacColors = mutableMapOf<Int, Int>()
+    private var tecColors = mutableMapOf<String, Int>()
+    private var plmnColors = mutableMapOf<String, Int>()
     private val POLYLINE_STROKE_WIDTH_PX = 12
     private val systemColors = arrayListOf<Int>(
         R.color.number1,
@@ -65,6 +65,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapPageViewModel = ViewModelProviders.of(this).get(MapPageViewModel::class.java)
         mapChoice = savedInstanceState?.getString("CHOICE").toString()
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + mapChoice)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -84,7 +85,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add custom info window
         myMap.setInfoWindowAdapter(CustomInfoWindowForGoogleMap(this))
         // Add information to map
-        this.addInformationToMap()
+        Thread{
+            this.addInformationToMap()
+        }.start()
+
 
     }
 
@@ -137,7 +141,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         cellId: Long
     ) {
         // TODO ADD CUSTOM INFORMATION
-        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId) ?: return
+//        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId) ?: return
         myMap.addMarker(
             MarkerOptions()
                 .position(LatLng(cellLatitude, cellLongitude))
