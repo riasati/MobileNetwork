@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.example.mobilenetworkproject.R
 import com.example.mobilenetworkproject.model.domain.CellInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
@@ -48,6 +49,7 @@ class HomeFragment : Fragment() {
                 button.text = "Start"
                 stopLocationUpdates()
                 Toast.makeText(root.context, "Finished", Toast.LENGTH_SHORT).show()
+                this.findNavController().navigate(R.id.action_nav_home_to_choice_map)
             }
         })
 

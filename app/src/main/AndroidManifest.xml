@@ -45,6 +45,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.mapPage.MapActivity"
+            android:label="@string/label_map_page"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
     </application>
 
 </manifest>

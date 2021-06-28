@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Navigation</string>
+    <string name="app_name">Cell Information App</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Pargar</string>
@@ -9,8 +9,8 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_about_us">About Us</string>
-    <string name="student_1">Student 1</string>
-    <string name="student_2">Student 2</string>
+    <string name="label_choice_page">Choice Map</string>
+    <string name="label_map_page">Map Page</string>
     <string name="menu_tourist_place_page">Tourist Place Page</string>
     <string name="start">Start</string>
 </resources>

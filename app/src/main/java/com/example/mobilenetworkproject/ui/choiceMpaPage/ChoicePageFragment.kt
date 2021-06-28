@@ -22,34 +22,30 @@ class ChoicePageFragment : Fragment() {
     ): View? {
         aboutUsViewModel =
             ViewModelProviders.of(this).get(ChoicePageViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
+        val root = inflater.inflate(R.layout.fragment_choice_map, container, false)
         val lacButton: Button = root.findViewById(R.id.lac_button)
         lacButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("CHOICE", "LAC")
-            // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.action_choice_map_to_map_page, bundle)
         }
         val cellButton: Button = root.findViewById(R.id.cell_button)
         cellButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("CHOICE", "CELL")
-            // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.action_choice_map_to_map_page, bundle)
         }
         val plmnButton: Button = root.findViewById(R.id.plmn_button)
         plmnButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("CHOICE", "PLMN")
-            // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.action_choice_map_to_map_page, bundle)
         }
         val tecButton: Button = root.findViewById(R.id.tec_button)
         tecButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putString("CHOICE", "TEC")
-            // TODO FIX NAVIGATION
-            this.findNavController().navigate(R.id.action_nav_home_to_nav_slide_show, bundle)
+            this.findNavController().navigate(R.id.action_choice_map_to_map_page, bundle)
         }
         return root
     }
