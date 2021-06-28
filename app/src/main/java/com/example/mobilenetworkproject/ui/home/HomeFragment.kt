@@ -42,11 +42,12 @@ class HomeFragment : Fragment() {
         val button = root.findViewById<Button>(R.id.startButton)
         button.setOnClickListener(View.OnClickListener {
             if (button.text == "Start") {
-                button.text = "Finished"
+                button.text = "Finish"
+                button.setBackgroundResource(R.color.number10)
+                Toast.makeText(root.context, "Started", Toast.LENGTH_SHORT).show()
                 getLocation(root, root.context, homeViewModel)
                 startLocationUpdates()
-            } else if (button.text == "Finished") {
-                button.text = "Start"
+            } else if (button.text == "Finish") {
                 stopLocationUpdates()
                 Toast.makeText(root.context, "Finished", Toast.LENGTH_SHORT).show()
                 this.findNavController().navigate(R.id.action_nav_home_to_choice_map)
