@@ -51,6 +51,7 @@
         android:textStyle="bold"
         android:layout_gravity="center"
         android:background="@color/number4"
+        android:padding="5dp"
         />
 
 </LinearLayout>

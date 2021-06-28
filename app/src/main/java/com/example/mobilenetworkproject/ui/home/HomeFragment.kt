@@ -253,13 +253,13 @@ class HomeFragment : Fragment() {
                         else{
                             addDataToRepository(cellJsonObject, locationObj, false, homeViewModel)
                             activity!!.runOnUiThread {
-                                Toast.makeText(activity, "add new location", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(activity, "add new location ", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
-                    activity!!.runOnUiThread {
-                        Toast.makeText(activity, "add new location" + locationObj.get("longitude").toString(), Toast.LENGTH_SHORT).show()
-                    }
+//                    activity!!.runOnUiThread {
+//                        Toast.makeText(activity, "add new location " + locationObj.get("longitude").toString(), Toast.LENGTH_SHORT).show()
+//                    }
                 }.start()
             }
         }
