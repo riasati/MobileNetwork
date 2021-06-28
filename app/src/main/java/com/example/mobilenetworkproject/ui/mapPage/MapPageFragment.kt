@@ -23,11 +23,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mapPageViewModel: MapPageViewModel
     private lateinit var myMap: GoogleMap
-    private lateinit var mapChoice: String
-    private lateinit var cellColors: Map<Long, Int>
-    private lateinit var lacColors: Map<Int, Int>
-    private lateinit var tecColors: Map<String, Int>
-    private lateinit var plmnColors: Map<String, Int>
+
+    companion object {
+        var mapChoice = ""
+    }
+
+    private var cellColors = mutableMapOf<Long, Int>()
+    private var lacColors = mutableMapOf<Int, Int>()
+    private var tecColors = mutableMapOf<String, Int>()
+    private var plmnColors = mutableMapOf<String, Int>()
     private val POLYLINE_STROKE_WIDTH_PX = 12
     private val systemColors = arrayListOf<Int>(
         R.color.number1,
@@ -64,7 +68,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(R.layout.fragment_map)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         mapPageViewModel = ViewModelProviders.of(this).get(MapPageViewModel::class.java)
-        mapChoice = savedInstanceState?.getString("CHOICE").toString()
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++" + mapChoice)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -84,12 +88,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add custom info window
         myMap.setInfoWindowAdapter(CustomInfoWindowForGoogleMap(this))
         // Add information to map
-        this.addInformationToMap()
+        Thread {
+            this.addInformationToMap()
+        }.start()
+
 
     }
 
     private fun addInformationToMap() {
-        val locationsInformation = mapPageViewModel.selectAllLocationInformation()?:return
+        val locationsInformation = mapPageViewModel.selectAllLocationInformation() ?: return
         if (locationsInformation.isEmpty()) {
             return
         }
@@ -136,13 +143,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         cellLongitude: Double,
         cellId: Long
     ) {
-        // TODO ADD CUSTOM INFORMATION
-        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId)?:return
+        val cellInformation = mapPageViewModel.getCellInformationByCellId(cellId) ?: return
         myMap.addMarker(
             MarkerOptions()
                 .position(LatLng(cellLatitude, cellLongitude))
-                .title("title")
-                .snippet("snippet")
+                .title("CELL_ID: " + cellInformation.cellId.toString())
+                .snippet(
+                    "CELL_TEC: " + cellInformation.cellGeneration + "     " + "CELL_PLMN: " + cellInformation.cellPLMN + "\n" +
+                            "CELL_LAC: " + cellInformation.cellLac.toString() + "     " + "CELL_CODE: " + cellInformation.cellCode.toString() + "\n" +
+                            "CELL_ARFCN: " + cellInformation.cellARFCN.toString()
+                )
         )
     }
 
@@ -178,40 +188,40 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getSuitableColor(currentLocationInformation: LocationInformation): Int? {
         val cellInformation =
             mapPageViewModel.getCellInformationByCellId(currentLocationInformation.cellId)
-                ?:return null
-        if (mapChoice == null) {
+                ?: return null
+        if (mapChoice == "") {
             return null
         }
         if (mapChoice == "LAC") {
             if (!lacColors.containsKey(cellInformation.cellLac)) {
-//                lacColors.put(
-//                    cellInformation.cellLac,
-//                    systemColors[(lacColors.size + 1) % 27]
-//                )
+                lacColors.put(
+                    cellInformation.cellLac,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
             }
             return lacColors[cellInformation.cellLac]
         } else if (mapChoice == "CELL") {
             if (!cellColors.containsKey(cellInformation.cellId)) {
-//                cellColors.put(
-//                    cellInformation.cellId,
-//                    systemColors[(lacColors.size + 1) % 27]
-//                )
+                cellColors.put(
+                    cellInformation.cellId,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
             }
             return cellColors[cellInformation.cellId]
         } else if (mapChoice == "PLMN") {
             if (!plmnColors.containsKey(cellInformation.cellPLMN)) {
-//                plmnColors.put(
-//                    cellInformation.cellPLMN,
-//                    systemColors[(lacColors.size + 1) % 27]
-//                )
+                plmnColors.put(
+                    cellInformation.cellPLMN,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
             }
             return plmnColors[cellInformation.cellPLMN]
         } else if (mapChoice == "TEC") {
             if (!tecColors.containsKey(cellInformation.cellGeneration)) {
-//                tecColors.put(
-//                    cellInformation.cellGeneration,
-//                    systemColors[(lacColors.size + 1) % 27]
-//                )
+                tecColors.put(
+                    cellInformation.cellGeneration,
+                    systemColors[(lacColors.size + 1) % 27]
+                )
             }
             return tecColors[cellInformation.cellGeneration]
         } else {
