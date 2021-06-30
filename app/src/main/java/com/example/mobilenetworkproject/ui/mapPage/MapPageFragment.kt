@@ -93,6 +93,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         while (!dataIsReady){
             continue
         }
+        dataIsReady = false
         // Add information to map
         this.addInformationToMap()
 
@@ -135,7 +136,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 LatLng(
                     lastLocationInformation.LocationLatitude,
                     lastLocationInformation.LocationLongitude
-                ), 4f
+                ), 6f
             )
         )
     }

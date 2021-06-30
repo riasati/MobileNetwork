@@ -50,6 +50,8 @@ class ChoicePageFragment : Fragment() {
     }
 
     private fun getDataFromDB() {
+        MapActivity.locationsInformation = arrayListOf()
+        MapActivity.cellsInformation = mutableMapOf()
         MapActivity.locationsInformation = choiceMapViewModel.selectAllLocationInformation()!!
         choiceMapViewModel.selectAllCellsInformation()
             ?.map { cellInformation ->
