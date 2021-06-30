@@ -223,8 +223,8 @@ class HomeFragment : Fragment() {
         locationRequest = LocationRequest.create().apply {
             interval = 10000
             fastestInterval = 5000
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            smallestDisplacement = 10F
+            priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
+            smallestDisplacement = 0F
         }
         locationCallback = object : LocationCallback() {
             val locationObj = JSONObject()

@@ -2,11 +2,11 @@ package com.example.mobilenetworkproject.model.data.repository.impl
 
 import com.example.mobilenetworkproject.model.data.local.source.impl.LocalCellInformationDataSourceImpl
 import com.example.mobilenetworkproject.model.data.local.source.impl.LocalLocationInformationDataSourceImpl
-import com.example.mobilenetworkproject.model.data.repository.MapDataRepository
+import com.example.mobilenetworkproject.model.data.repository.ChoiceMapRepository
 import com.example.mobilenetworkproject.model.domain.CellInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
 
-object MapDataRepositoryImpl: MapDataRepository {
+object ChoiceMapRepositoryImpl: ChoiceMapRepository {
     override fun getCellInformationByCellId(cell_id: Long): CellInformation? {
         return LocalCellInformationDataSourceImpl.getCelInformationByCellId(cell_id)
     }
