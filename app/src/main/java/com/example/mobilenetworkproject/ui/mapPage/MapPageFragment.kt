@@ -205,7 +205,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             if (!cellColors.containsKey(cellInformation?.cellId)) {
                 cellColors.put(
                     cellInformation?.cellId!!,
-                    systemColors[(lacColors.size + 1) % 27]
+                    systemColors[(cellColors.size + 1) % 27]
                 )
             }
             return cellColors[cellInformation?.cellId]
@@ -213,7 +213,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             if (!plmnColors.containsKey(cellInformation?.cellPLMN)) {
                 plmnColors.put(
                     cellInformation?.cellPLMN!!,
-                    systemColors[(lacColors.size + 1) % 27]
+                    systemColors[(plmnColors.size + 1) % 27]
                 )
             }
             return plmnColors[cellInformation?.cellPLMN]
@@ -221,7 +221,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             if (!tecColors.containsKey(cellInformation?.cellGeneration)) {
                 tecColors.put(
                     cellInformation?.cellGeneration!!,
-                    systemColors[(lacColors.size + 1) % 27]
+                    systemColors[(tecColors.size + 1) % 27]
                 )
             }
             return tecColors[cellInformation?.cellGeneration]
