@@ -2,16 +2,13 @@ package com.example.mobilenetworkproject.ui.mapPage
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.WallpaperColors
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.example.mobilenetworkproject.R
-import com.example.mobilenetworkproject.model.domain.CellInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,17 +21,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapPageViewModel: MapPageViewModel
     private lateinit var myMap: GoogleMap
 
-    companion object {
-        var mapChoice = ""
-        var locationsInformation = listOf<LocationInformation>()
-        var cellsInformation = mutableMapOf<Long, CellInformation>()
-        var dataIsReady = false
-    }
-
+    private var locationsInformation = listOf<LocationInformation>()
+    private var dataIsReady = false
     private var cellColors = mutableMapOf<Long, Int>()
-    private var lacColors = mutableMapOf<Int, Int>()
-    private var tecColors = mutableMapOf<String, Int>()
-    private var plmnColors = mutableMapOf<String, Int>()
     private val POLYLINE_STROKE_WIDTH_PX = 12
     private val systemColors = arrayListOf<Int>(
         R.color.number1,
@@ -90,7 +79,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // Add custom info window
         myMap.setInfoWindowAdapter(CustomInfoWindowForGoogleMap(this))
         // wait until data is ready
-        while (!dataIsReady){
+        Thread {
+            this.getDataFromDB()
+        }.start()
+        while (!dataIsReady) {
             continue
         }
         dataIsReady = false
@@ -100,23 +92,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addInformationToMap() {
-        if (locationsInformation.isEmpty() || cellsInformation.isEmpty()) {
+        if (locationsInformation.isEmpty()) {
             return
         }
-        var lastCellId = -1L
         var currentLocationInformation: LocationInformation
         var nextLocationInformation: LocationInformation
         for (index: Int in 0 until locationsInformation.size - 1) {
             currentLocationInformation = locationsInformation[index]
-            if (currentLocationInformation.cellId != lastCellId) {
-                this.addCellsInformationToMap(
-                    currentLocationInformation.LocationLatitude,
-                    currentLocationInformation.LocationLongitude,
-                    currentLocationInformation.cellId
-                )
-                lastCellId = currentLocationInformation.cellId
-            }
             nextLocationInformation = locationsInformation[index + 1]
+            this.addLocationsInformationToMap(currentLocationInformation)
             this.addPolylineToMap(
                 currentLocationInformation = currentLocationInformation,
                 nextLocationInformation = nextLocationInformation
@@ -124,13 +108,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         }
         val lastLocationInformation = locationsInformation[locationsInformation.size - 1]
-        if (lastLocationInformation.cellId != lastCellId) {
-            this.addCellsInformationToMap(
-                lastLocationInformation.LocationLatitude,
-                lastLocationInformation.LocationLongitude,
-                lastLocationInformation.cellId
-            )
-        }
+        this.addLocationsInformationToMap(lastLocationInformation)
         myMap.moveCamera(
             CameraUpdateFactory.newLatLngZoom(
                 LatLng(
@@ -141,20 +119,23 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun addCellsInformationToMap(
-        cellLatitude: Double,
-        cellLongitude: Double,
-        cellId: Long
+    private fun addLocationsInformationToMap(
+        locationInformation: LocationInformation
     ) {
-        val cellInformation = cellsInformation[cellId]
         myMap.addMarker(
             MarkerOptions()
-                .position(LatLng(cellLatitude, cellLongitude))
-                .title("CELL_ID: " + cellInformation?.cellId.toString())
+                .position(
+                    LatLng(
+                        locationInformation.LocationLatitude,
+                        locationInformation.LocationLongitude
+                    )
+                )
+                .title("CELL_ID: " + locationInformation.cellId.toString())
                 .snippet(
-                    "CELL_TEC: " + cellInformation?.cellGeneration + "     " + "CELL_PLMN: " + cellInformation?.cellPLMN + "\n" +
-                            "CELL_LAC: " + cellInformation?.cellLac.toString() + "     " + "CELL_CODE: " + cellInformation?.cellCode.toString() + "\n" +
-                            "CELL_ARFCN: " + cellInformation?.cellARFCN.toString()
+                    "PING: " + locationInformation.ping + "     " + "CELL_PLMN: " + locationInformation.cellPLMN + "\n" +
+                            "JITTER: " + locationInformation.jitter + "     " + "DOWN_LINK_RATE: " + locationInformation.downLinkRate + "\n" +
+                            "UP_LINK_RATE: " + locationInformation.upLinkRate + "     " + "RSSI_RXLEV: " + locationInformation.RssiRXlev + "\n" +
+                            "RSRP_RSRQ: " + locationInformation.RsrpRsrq
                 )
         )
     }
@@ -189,45 +170,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getSuitableColor(currentLocationInformation: LocationInformation): Int? {
-        val cellInformation = cellsInformation[currentLocationInformation.cellId]
-        if (mapChoice == "") {
-            return null
+        if (!cellColors.containsKey(currentLocationInformation.cellId)) {
+            cellColors.put(
+                currentLocationInformation.cellId,
+                systemColors[(cellColors.size + 1) % 27]
+            )
         }
-        if (mapChoice == "LAC") {
-            if (!lacColors.containsKey(cellInformation?.cellLac)) {
-                lacColors.put(
-                    cellInformation?.cellLac!!,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
-            }
-            return lacColors[cellInformation?.cellLac]
-        } else if (mapChoice == "CELL") {
-            if (!cellColors.containsKey(cellInformation?.cellId)) {
-                cellColors.put(
-                    cellInformation?.cellId!!,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
-            }
-            return cellColors[cellInformation?.cellId]
-        } else if (mapChoice == "PLMN") {
-            if (!plmnColors.containsKey(cellInformation?.cellPLMN)) {
-                plmnColors.put(
-                    cellInformation?.cellPLMN!!,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
-            }
-            return plmnColors[cellInformation?.cellPLMN]
-        } else if (mapChoice == "TEC") {
-            if (!tecColors.containsKey(cellInformation?.cellGeneration)) {
-                tecColors.put(
-                    cellInformation?.cellGeneration!!,
-                    systemColors[(lacColors.size + 1) % 27]
-                )
-            }
-            return tecColors[cellInformation?.cellGeneration]
-        } else {
-            return null
-        }
+        return cellColors[currentLocationInformation.cellId]
+    }
+
+    private fun getDataFromDB() {
+        this.locationsInformation = arrayListOf()
+        this.locationsInformation = this.mapPageViewModel.selectAllLocationInformation()!!
+        this.dataIsReady = true
     }
 }
 

@@ -3,6 +3,11 @@
     <words>
       <w>arfcn</w>
       <w>plmn</w>
+      <w>rsrp</w>
+      <w>rsrq</w>
+      <w>rssi</w>
+      <w>rxlev</w>
+      <w>xlev</w>
     </words>
   </dictionary>
 </component>

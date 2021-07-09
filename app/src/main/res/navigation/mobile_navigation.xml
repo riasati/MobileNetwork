@@ -12,16 +12,6 @@
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_home_to_choice_map"
-            app:destination="@id/choice_map" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/choice_map"
-        android:name="com.example.mobilenetworkproject.ui.choiceMpaPage.ChoicePageFragment"
-        android:label="@string/label_choice_page"
-        tools:layout="@layout/fragment_choice_map">
-        <action
-            android:id="@+id/action_choice_map_to_map_page"
             app:destination="@id/map_page" />
     </fragment>
 
