@@ -13,7 +13,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.mobilenetworkproject.model.data.repository.impl.HomeDataRepositoryImpl
-import com.example.mobilenetworkproject.model.domain.CellInformation
+//import com.example.mobilenetworkproject.model.domain.CellInformation
 import com.example.mobilenetworkproject.model.domain.LocationInformation
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
